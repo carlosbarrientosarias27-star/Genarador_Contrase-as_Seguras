@@ -5,18 +5,20 @@ def guardar_contrasena_en_archivo(password, fortaleza):
     Pregunta al usuario si desea guardar la contraseña y la escribe
     en contrasenas.txt con metadatos.
     """
+    # 1. Preguntar al usuario
     confirmacion = input("\n¿Deseas guardar esta contraseña en el archivo? (s/n): ").lower()
     
     if confirmacion == 's':
         try:
-            # Obtener fecha y hora actual
+            # 2. Preparar los datos (fecha y hora)
             ahora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
-            # Abrir archivo en modo 'a' (append) para añadir contenido al final
+            # 3. Abrir en modo append ('a') y escribir
             with open("contrasenas.txt", "a", encoding="utf-8") as archivo:
                 linea = f"[{ahora}] Pass: {password} | Fortaleza: {fortaleza}\n"
                 archivo.write(linea)
             
+            # 4. Confirmar al usuario
             print("✅ ¡Éxito! La contraseña se ha guardado correctamente en contrasenas.txt.")
             
         except Exception as e:
