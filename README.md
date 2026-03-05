@@ -1,1 +1,87 @@
-# Genarador_Contrase-as_Seguras
+# 🔐 Generador de Contraseñas Seguras
+
+Un generador de contraseñas seguras desarrollado en Python, con evaluación de fortaleza, almacenamiento persistente y validaciones integradas.
+
+---
+
+## 📋 Descripción
+
+Este proyecto proporciona una herramienta completa para la **generación, evaluación y almacenamiento de contraseñas seguras**. Está diseñado con una arquitectura modular que separa claramente las responsabilidades: generación de contraseñas, evaluación de su fortaleza, almacenamiento y validación de entradas.
+
+---
+
+## 🎯 Objetivos
+
+- **Generar contraseñas seguras** con criterios configurables (longitud, caracteres especiales, mayúsculas, números, etc.)
+- **Evaluar la fortaleza** de contraseñas existentes o generadas mediante métricas definidas
+- **Almacenar contraseñas** de forma organizada y recuperable entre sesiones
+- **Validar entradas del usuario** para garantizar parámetros correctos antes de procesar
+- **Ofrecer una interfaz clara** desde línea de comandos para uso inmediato
+
+---
+
+## 🗂️ Estructura del Proyecto
+
+```
+GENARADOR_CONTRASE-AS_S.../
+├── docs/
+│   └── asistencia_ia.md        # Documentación de asistencia con IA
+├── src/
+│   ├── __init__.py             # Inicialización del paquete
+│   ├── almacenamiento.py       # Gestión de almacenamiento de contraseñas
+│   ├── core.py                 # Lógica central de generación
+│   ├── evaluador.py            # Evaluación de fortaleza de contraseñas
+│   ├── main.py                 # Punto de entrada de la aplicación
+│   └── validaciones.py         # Validaciones de parámetros y entradas
+├── test/                       # Suite de pruebas
+├── .gitignore
+├── LICENSE
+├── README.md
+└── requirements.txt
+```
+
+---
+
+## 🚀 Instalación
+
+```bash
+# Clonar el repositorio
+git clone <url-del-repositorio>
+cd GENARADOR_CONTRASE-AS_S
+
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+---
+
+## ▶️ Uso
+
+```bash
+python src/main.py
+```
+
+---
+
+## 🧩 Módulos Principales
+
+| Módulo | Descripción |
+|---|---|
+| `core.py` | Algoritmos de generación de contraseñas |
+| `evaluador.py` | Análisis y puntuación de fortaleza |
+| `almacenamiento.py` | Guardado y recuperación de contraseñas |
+| `validaciones.py` | Validación de parámetros de entrada |
+
+---
+
+## 🧪 Tests
+
+```bash
+python -m pytest test/
+```
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo los términos descritos en el archivo [LICENSE](LICENSE).
