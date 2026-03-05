@@ -55,11 +55,34 @@ pip install -r requirements.txt
 
 ---
 
-## ▶️ Uso
+## 💻 Instrucciones de Uso
+El punto de entrada principal del proyecto es main.py. Puedes ejecutarlo directamente desde la raíz:
 
-```bash
+Bash
 python src/main.py
-```
+
+## Ejemplo de uso rápido:
+Si deseas integrar la lógica en tu propio script, puedes importar los módulos de src:
+
+Python
+from src.core import generar_password
+from src.evaluador import evaluar_seguridad
+
+## Generar una contraseña de 16 caracteres
+password = generar_password(longitud=16)
+print(f"Contraseña generada: {password}")
+
+## Evaluar su fortaleza
+resultado = evaluar_seguridad(password)
+print(f"Nivel de seguridad: {resultado}")
+
+## 🧪 Pruebas (Testing)
+
+El proyecto cuenta con una suite completa de pruebas unitarias localizadas en la carpeta test/. Para ejecutarlas, asegúrate de tener pytest instalado y corre:
+
+Bash
+pytest test/
+Esto ejecutará todas las validaciones para el core, el almacenamiento y los casos borde definidos en test_caso_edge.py.
 
 ---
 
