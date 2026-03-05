@@ -3,11 +3,11 @@ import random
 import string
 
 def limpiar_pantalla():
-    """Limpia la terminal según el sistema operativo."""
+    """Limpia la terminal según el sistema operativo detectado (Windows o POSIX)."""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def mostrar_bienvenida():
-    """Muestra el banner de bienvenida con el título del programa."""
+    """Imprime en consola el banner visual de bienvenida del sistema."""
     print("=" * 40)
     print("      SISTEMA DE GESTIÓN DE PASSWORDS")
     print("=" * 40)
@@ -34,14 +34,24 @@ def generar_contrasena(longitud=12, usar_simbolos=True):
     return password
 
 def mostrar_menu():
-    """Muestra las opciones disponibles en el menú principal."""
+    """
+    Muestra las opciones del menú principal y captura la entrada del usuario.
+
+    Returns:
+        str: El carácter u opción seleccionada por el usuario.
+    """
     print("\n1. Generar contraseña")
     print("2. Ver historial")
     print("3. Salir")
     return input("\nSeleccione una opción: ")
 
 def main():
-    """Ejecuta el bucle principal de la aplicación."""
+    """
+    Controlador principal que gestiona el flujo de navegación de la aplicación.
+    
+    Mantiene un historial temporal de contraseñas generadas durante la sesión
+    y permite la navegación entre la generación, el historial y la salida.
+    """
     historial = []
     
     while True:

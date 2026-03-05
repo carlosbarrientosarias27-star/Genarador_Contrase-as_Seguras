@@ -3,8 +3,16 @@ import string
 
 def validar_entero(mensaje, minimo, maximo, defecto=None):
     """
-    Solicita un número al usuario y valida que esté en el rango permitido.
-    Permite un valor por defecto si el usuario presiona Enter.
+    Solicita un número al usuario y valida que esté dentro de un rango específico.
+
+    Args:
+        mensaje (str): El prompt que se mostrará al usuario.
+        minimo (int): El valor entero mínimo permitido.
+        maximo (int): El valor entero máximo permitido.
+        defecto (int, optional): Valor a retornar si la entrada está vacía.
+
+    Returns:
+        int: El número validado proporcionado por el usuario o el valor por defecto.
     """
     while True:
         sufijo = f" [Por defecto: {defecto}]" if defecto is not None else ""
@@ -23,7 +31,13 @@ def validar_entero(mensaje, minimo, maximo, defecto=None):
 
 def evaluar_fortaleza(password):
     """
-    Determina la robustez de la contraseña según su longitud.
+    Determina la robustez cualitativa de la contraseña basándose en su extensión.
+
+    Args:
+        password (str): La cadena de texto a evaluar.
+
+    Returns:
+        str: Una etiqueta descriptiva con un indicador visual (Débil, Media o Fuerte).
     """
     longitud = len(password)
     if longitud < 10:
@@ -35,7 +49,13 @@ def evaluar_fortaleza(password):
 
 def generar_password(longitud=16):
     """
-    Crea una cadena aleatoria segura usando letras, números y símbolos.
+    Crea una cadena aleatoria criptográficamente segura.
+
+    Args:
+        longitud (int): El número de caracteres de la contraseña (por defecto 16).
+
+    Returns:
+        str: Contraseña compuesta por letras, números y símbolos.
     """
     caracteres = string.ascii_letters + string.digits + string.punctuation
     # secrets es más seguro que el módulo random para contraseñas
@@ -43,6 +63,12 @@ def generar_password(longitud=16):
     return password
 
 def ejecutar_programa():
+    """
+    Ejecuta el flujo lógico del generador de contraseñas múltiples.
+    
+    Coordina la captura de parámetros, la generación masiva y la 
+    presentación tabulada de resultados con su respectiva fortaleza.
+    """
     print("--- 🔐 GENERADOR DE CONTRASEÑAS SEGURAS ---")
     
     # 1. Validar longitud (8 a 128, defecto 16)

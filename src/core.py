@@ -2,6 +2,19 @@ import string
 import secrets
 
 def generar_password(longitud=12, usar_mayus=True, usar_nums=True, usar_simbs=True, excluir_confusos=False):
+    """
+    Genera una contraseña aleatoria segura basada en los criterios seleccionados.
+
+    Args:
+        longitud (int): Longitud total de la contraseña.
+        usar_mayus (bool): Indica si se incluyen letras mayúsculas.
+        usar_nums (bool): Indica si se incluyen dígitos numéricos.
+        usar_simbs (bool): Indica si se incluyen caracteres especiales.
+        excluir_confusos (bool): Si es True, elimina caracteres similares (0, O, l, I, 1).
+
+    Returns:
+        str: La contraseña generada mediante el módulo secrets.
+    """
     # Definir los sets básicos
     minusculas = string.ascii_lowercase
     mayusculas = string.ascii_uppercase
@@ -30,6 +43,12 @@ def generar_password(longitud=12, usar_mayus=True, usar_nums=True, usar_simbs=Tr
     return password
 
 def ejecutar_interfaz():
+    """
+    Inicia la interfaz de línea de comandos para configurar y generar contraseñas.
+    
+    Solicita al usuario las preferencias de composición y muestra el resultado
+    por consola tras validar que se haya seleccionado al menos un tipo de carácter.
+    """
     print("--- Generador de Contraseñas Seguras ---")
     
     # Inputs del usuario
