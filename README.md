@@ -23,17 +23,32 @@ Este proyecto proporciona una herramienta completa para la **generación, evalua
 ## 🗂️ Estructura del Proyecto
 
 ```
-GENARADOR_CONTRASE-AS_S.../
+GENERADOR_CONTRASE-AS_S.../
+│
+├── .qodo/
+│
 ├── docs/
-│   └── asistencia_ia.md        # Documentación de asistencia con IA
+│   ├── asistencia_ia.md
+│   └── caso edge.md
+│
 ├── src/
-│   ├── __init__.py             # Inicialización del paquete
-│   ├── almacenamiento.py       # Gestión de almacenamiento de contraseñas
-│   ├── core.py                 # Lógica central de generación
-│   ├── evaluador.py            # Evaluación de fortaleza de contraseñas
-│   ├── main.py                 # Punto de entrada de la aplicación
-│   └── validaciones.py         # Validaciones de parámetros y entradas
-├── test/                       # Suite de pruebas
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── almacenamiento.py
+│   ├── core.py
+│   ├── evaluador.py
+│   ├── main.py
+│   └── validaciones.py
+│
+├── test/
+│   ├── __init__.py
+│   ├── test_almacenamiento.py
+│   ├── test_caso edge.py
+│   ├── test_core.py
+│   ├── test_evaluador.py
+│   ├── test_main.py
+│   └── test_validaciones.py
+│
 ├── .gitignore
 ├── LICENSE
 ├── README.md
