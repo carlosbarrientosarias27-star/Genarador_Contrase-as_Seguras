@@ -43,7 +43,7 @@ def ejecutar_interfaz():
             print("¡Error! Debes seleccionar al menos un tipo de carácter (mayúsculas, números o símbolos).")
             continue
         break
-        
+        n
     u_confusos = input("¿Excluir caracteres confusos (0, O, l, I, 1)? (s/n): ").lower() == 's'
     
     # Generación y salida
