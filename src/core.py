@@ -21,14 +21,21 @@ def generar_password(longitud=12, usar_mayus=True, usar_nums=True, usar_simbs=Tr
     numeros = string.digits
     simbolos = string.punctuation
     
-    # Construir el pool de caracteres dinámicamente
-    caracteres = minusculas
+    # 1. Empezamos con un pool vacío
+    caracteres = ""
+    
+    # 2. Agregamos solo lo que el usuario pidió
     if usar_mayus:
         caracteres += mayusculas
     if usar_nums:
         caracteres += numeros
     if usar_simbs:
         caracteres += simbolos
+    
+    # 3. Fallback: Si no eligió nada (o por defecto), usamos minúsculas
+    # Esto evita que el pool esté vacío y 'secrets.choice' lance error
+    if not caracteres:
+        caracteres = minusculas
         
     # Filtrar caracteres confusos: 0, O, l, I, 1
     if excluir_confusos:
