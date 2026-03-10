@@ -1,44 +1,42 @@
 import unittest
 from unittest.mock import patch, mock_open
-import sys
 import os
+import sys
 
-# Añade la carpeta raíz del proyecto al path de búsqueda de Python
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Ajuste de ruta para llegar a la raíz desde 'test/src/'
+raiz_proyecto = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, raiz_proyecto)
 
+from src.storage import guardar_en_archivo
 
-from src.almacenamiento import guardar_contrasena_en_archivo
+class TestStorage(unittest.TestCase):
 
-class TestAlmacenamiento(unittest.TestCase):
-
-    @patch('builtins.input', return_value='s')
+    @patch('os.makedirs')
+    @patch('os.path.exists')
     @patch('builtins.open', new_callable=mock_open)
-    def test_guardar_exitoso(self, mock_file, mock_input):
-        """Prueba que la contraseña se guarde cuando el usuario dice 's'."""
-        pass_test = "Password123"
-        fortaleza_test = "Alta"
+    def test_guardar_exitoso(self, mock_file, mock_exists, mock_makedirs):
+        """Verifica que el archivo se abra en modo 'append' y se cree la carpeta."""
+        # Configuración del mock
+        mock_exists.return_value = False
+        datos_prueba = [("P4ssw0rd!", "Alta"), ("12345", "Baja")]
         
-        guardar_contrasena_en_archivo(pass_test, fortaleza_test)
+        resultado = guardar_en_archivo(datos_prueba)
+        
+        # 1. Verificar que intentó crear la carpeta 'Contraseña'
+        mock_makedirs.assert_called_with("Contraseña", exist_ok=True)
+        
+        # 2. Verificar que abrió el archivo correcto en modo 'a' (append)
+        ruta_esperada = os.path.join("Contraseña", "Contraseñas.txt")
+        mock_file.assert_called_with(ruta_esperada, "a", encoding="utf-8")
+        
+        # 3. Verificar que devolvió True
+        self.assertTrue(resultado)
 
-        # Verifica que el archivo se abrió en modo append ('a')
-        mock_file.assert_called_once_with("contrasenas.txt", "a", encoding="utf-8")
-        
-        # Verifica que se escribió contenido que incluye la contraseña y la fortaleza
-        handle = mock_file()
-        args, _ = handle.write.call_args
-        contenido_escrito = args[0]
-        
-        self.assertIn(pass_test, contenido_escrito)
-        self.assertIn(fortaleza_test, contenido_escrito)
-
-    @patch('builtins.input', return_value='n')
-    @patch('builtins.open', new_callable=mock_open)
-    def test_cancelar_guardado(self, mock_file, mock_input):
-        """Prueba que NO se escriba nada si el usuario dice 'n'."""
-        guardar_contrasena_en_archivo("pass", "Baja")
-        
-        # Verifica que el archivo nunca se llegó a abrir para escribir
-        mock_file.assert_not_called()
+    @patch('builtins.open', side_effect=Exception("Error de permiso"))
+    def test_manejo_errores(self, mock_file):
+        """Verifica que la función maneje excepciones y devuelva False."""
+        resultado = guardar_en_archivo([("test", "Media")])
+        self.assertFalse(resultado)
 
 if __name__ == '__main__':
     unittest.main()

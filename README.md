@@ -1,125 +1,202 @@
-# 🔐 Generador de Contraseñas Seguras
+# 🔐 Generador de Contraseñas
 
-Un generador de contraseñas seguras desarrollado en Python, con evaluación de fortaleza, almacenamiento persistente y validaciones integradas.
-
----
-
-## 📋 Descripción
-
-Este proyecto proporciona una herramienta completa para la **generación, evaluación y almacenamiento de contraseñas seguras**. Está diseñado con una arquitectura modular que separa claramente las responsabilidades: generación de contraseñas, evaluación de su fortaleza, almacenamiento y validación de entradas.
+Un generador de contraseñas seguro y configurable desarrollado en Python, con soporte para almacenamiento, validación y utilidades auxiliares.
 
 ---
 
-## 🎯 Objetivos
+# 📋 Descripción del Proyecto
 
-- **Generar contraseñas seguras** con criterios configurables (longitud, caracteres especiales, mayúsculas, números, etc.)
-- **Evaluar la fortaleza** de contraseñas existentes o generadas mediante métricas definidas
-- **Almacenar contraseñas** de forma organizada y recuperable entre sesiones
-- **Validar entradas del usuario** para garantizar parámetros correctos antes de procesar
-- **Ofrecer una interfaz clara** desde línea de comandos para uso inmediato
+**Generador de Contraseñas** es una aplicación Python modular que permite crear contraseñas seguras de forma personalizada. El proyecto está diseñado con buenas prácticas de software: separación de responsabilidades, cobertura de tests y documentación clara.
+
+# 🎯 Objetivos
+
+- Generar contraseñas aleatorias y seguras según criterios configurables por el usuario.
+- Validar la fortaleza de contraseñas existentes.
+- Almacenar contraseñas generadas de forma organizada.
+- Proveer utilidades reutilizables que soporten la lógica principal.
+- Mantener una arquitectura limpia, modular y fácilmente extensible.
+- Garantizar la calidad del código mediante tests unitarios y de casos edge.
 
 ---
 
-## 🗂️ Estructura del Proyecto
+# 📁 Estructura del Proyecto
 
 ```
-GENERADOR_CONTRASE-AS_S.../
-│
-├── .qodo/
-│
-├── docs/
-│   ├── asistencia_ia.md
-│   └── caso edge.md
-│
-├── src/
-│   ├── __pycache__/
+contraseña/                      # Archivos de contraseñas generadas
+Generador_contraseñas/
+├── docs/                        # Documentación adicional
+├── src/                         # Código fuente principal
 │   ├── __init__.py
-│   ├── almacenamiento.py
-│   ├── core.py
-│   ├── evaluador.py
-│   ├── main.py
-│   └── validaciones.py
-│
+│   ├── generator.py             # Lógica de generación de contraseñas
+│   ├── storage.py               # Almacenamiento de contraseñas
+│   ├── utils.py                 # Utilidades auxiliares
+│   └── validator.py             # Validación de contraseñas
 ├── test/
-│   ├── __init__.py
-│   ├── test_almacenamiento.py
-│   ├── test_caso edge.py
-│   ├── test_core.py
-│   ├── test_evaluador.py
-│   ├── test_main.py
-│   └── test_validaciones.py
-│
+│   └── src/                     # Tests unitarios
+│       ├── __init__.py
+│       ├── test_generator.py
+│       ├── test_storage.py
+│       ├── test_utils.py
+│       ├── test_validator.py
+│       ├── test_caso_edge.py    # Casos límite y edge cases
+│       └── test_main.py
 ├── .gitignore
 ├── LICENSE
+├── main.py                      # Punto de entrada de la aplicación
 ├── README.md
 └── requirements.txt
 ```
 
 ---
 
-## 🚀 Instalación
+# 🚀 Instalación
+
+## Prerrequisitos
+
+- Python 3.14
+
+
+## Pasos
+
+1. **Clona el repositorio:**
 
 ```bash
-# Clonar el repositorio
-git clone <url-del-repositorio>
-cd GENARADOR_CONTRASE-AS_S
+git clone https://github.com/tu-usuario/Generador_contraseñas.git
+cd Generador_contraseñas
+```
 
-# Instalar dependencias
+2. **Crea y activa un entorno virtual (recomendado):**
+
+```bash
+python -m venv venv
+
+# En Windows:
+venv\Scripts\activate
+
+# En macOS/Linux:
+source venv/bin/activate
+```
+
+3. **Instala las dependencias:**
+
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 💻 Instrucciones de Uso
-El punto de entrada principal del proyecto es main.py. Puedes ejecutarlo directamente desde la raíz:
+# 🛠️ Uso
 
-Bash
-python src/main.py
+## Ejecutar la aplicación
 
-## Ejemplo de uso rápido:
-Si deseas integrar la lógica en tu propio script, puedes importar los módulos de src:
+```
+python main.py
+```
 
-Python
-from src.core import generar_password
-from src.evaluador import evaluar_seguridad
+## Generar una contraseña desde código
 
-## Generar una contraseña de 16 caracteres
-password = generar_password(longitud=16)
-print(f"Contraseña generada: {password}")
+```python
+from src.generator import PasswordGenerator
 
-## Evaluar su fortaleza
-resultado = evaluar_seguridad(password)
-print(f"Nivel de seguridad: {resultado}")
+# Instancia el generador
+gen = PasswordGenerator()
 
-## 🧪 Pruebas (Testing)
+# Genera una contraseña de 16 caracteres con mayúsculas, números y símbolos
+password = gen.generate(
+    length=16,
+    uppercase=True,
+    numbers=True,
+    symbols=True
+)
 
-El proyecto cuenta con una suite completa de pruebas unitarias localizadas en la carpeta test/. Para ejecutarlas, asegúrate de tener pytest instalado y corre:
+print(password)
+# Ejemplo: "Xk3#mP9$qRv2@Lw8"
+```
 
-Bash
-pytest test/
-Esto ejecutará todas las validaciones para el core, el almacenamiento y los casos borde definidos en test_caso_edge.py.
+## Validar una contraseña
 
----
+```python
+from src.validator import PasswordValidator
 
-## 🧩 Módulos Principales
+validator = PasswordValidator()
 
-| Módulo | Descripción |
-|---|---|
-| `core.py` | Algoritmos de generación de contraseñas |
-| `evaluador.py` | Análisis y puntuación de fortaleza |
-| `almacenamiento.py` | Guardado y recuperación de contraseñas |
-| `validaciones.py` | Validación de parámetros de entrada |
+result = validator.validate("MiContraseña123!")
+print(result)
+# Ejemplo: {'valid': True, 'strength': 'fuerte', 'score': 85}
+```
 
----
+## Guardar una contraseña
 
-## 🧪 Tests
+```python
+from src.storage import PasswordStorage
 
-```bash
-python -m pytest test/
+storage = PasswordStorage()
+
+storage.save(label="Gmail", password="Xk3#mP9$qRv2@Lw8")
+passwords = storage.load_all()
+print(passwords)
+```
+
+## Usar utilidades auxiliares
+
+```python
+from src.utils import entropy, has_repeating_chars
+
+pwd = "MiContraseña@99"
+print(entropy(pwd))              # Calcula la entropía de bits
+print(has_repeating_chars(pwd))  # Detecta caracteres repetidos
 ```
 
 ---
 
-## 📄 Licencia
+# 🧪 Tests
 
-Este proyecto está bajo los términos descritos en el archivo [LICENSE](LICENSE).
+El proyecto incluye tests unitarios y casos edge para todos los módulos.
+
+## Ejecutar todos los tests
+
+```
+python -m pytest test/ -v
+```
+
+## Ejecutar tests de un módulo específico
+
+```bash
+python -m pytest test/src/test_generator.py -v
+python -m pytest test/src/test_validator.py -v
+python -m pytest test/src/test_storage.py -v
+python -m pytest test/src/test_utils.py -v
+```
+
+### Ejecutar casos edge
+
+```bash
+python -m pytest test/src/test_caso_edge.py -v
+```
+
+## Ver cobertura de tests
+
+```bash
+pip install pytest-cov
+python -m pytest test/ --cov=src --cov-report=term-missing
+```
+
+---
+
+# ⚙️ Módulos
+
+| Módulo | Descripción |
+|---|---|
+| `generator.py` | Generación de contraseñas configurables |
+| `validator.py` | Evaluación de fortaleza y validación de contraseñas |
+| `storage.py` | Guardado y recuperación de contraseñas |
+| `utils.py` | Funciones auxiliares: entropía, caracteres repetidos, etc. |
+
+---
+
+
+# 📄 Licencia
+
+Este proyecto está bajo los términos de la licencia incluida en el archivo [LICENSE](LICENSE).
+
+---

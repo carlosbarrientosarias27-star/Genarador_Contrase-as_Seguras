@@ -1,46 +1,45 @@
 import unittest
-import string
-import sys
+from unittest.mock import patch
 import os
+import sys
 
-# Añade la carpeta raíz del proyecto al sistema de rutas de Python
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# 1. Ajuste Dinámico del Path
+# Buscamos la carpeta 'Generador_contraseñas' subiendo un nivel desde 'test/'
+ruta_raiz = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if ruta_raiz not in sys.path:
+    sys.path.insert(0, ruta_raiz)
 
-# Ahora ya puedes importar
-from Generador_contraseñas.main import generar_contrasena
+# 2. Importaciones correctas según tus archivos
+from main import menu_principal  # En main.py el punto de entrada es menu_principal
 
-class TestPasswordManager(unittest.TestCase):
+class TestMain(unittest.TestCase):
 
-    def test_longitud_minima(self):
-        """Verifica que no se generen contraseñas de menos de 8 caracteres."""
-        # Si pedimos 5, el código debería forzar el mínimo de 8
-        resultado = generar_contrasena(longitud=5)
-        self.assertGreaterEqual(len(resultado), 8)
+    @patch('builtins.input')
+    @patch('os.system') # Mock para limpiar_pantalla
+    def test_menu_salir(self, mock_system, mock_input):
+        """Verifica que la opción '3' termine el programa."""
+        # Simulamos que el usuario escribe '3'
+        mock_input.return_value = '3'
+        
+        with patch('builtins.print') as mock_print:
+            menu_principal()
+            # Verificamos que se despidió correctamente
+            mock_print.assert_any_call("¡Hasta luego!")
 
-    def test_longitud_personalizada(self):
-        """Verifica que respete longitudes mayores al mínimo."""
-        largo = 15
-        resultado = generar_contrasena(longitud=largo)
-        self.assertEqual(len(resultado), largo)
-
-    def test_sin_simbolos(self):
-        """Verifica que no incluya símbolos si se desactiva la opción."""
-        resultado = generar_contrasena(usar_simbolos=False)
-        # Comprobamos que ningún caracter sea de puntuación
-        for char in resultado:
-            self.assertNotIn(char, string.punctuation)
-
-    def test_con_simbolos(self):
-        """Verifica que la contraseña pueda contener símbolos (probabilidad)."""
-        # Generamos una larga para asegurar que aparezcan símbolos
-        resultado = generar_contrasena(longitud=50, usar_simbolos=True)
-        tiene_simbolo = any(char in string.punctuation for char in resultado)
-        self.assertTrue(tiene_simbolo, "La contraseña debería contener al menos un símbolo")
-
-    def test_tipo_retorno(self):
-        """Asegura que el resultado sea siempre una cadena de texto."""
-        resultado = generar_contrasena()
-        self.assertIsInstance(resultado, str)
+    @patch('builtins.input')
+    @patch('os.system')
+    def test_flujo_incorrecto_manejo_error(self, mock_system, mock_input):
+        """Verifica que el programa maneje errores de valor (ValueError)."""
+        # 1. Elegir generar ('1')
+        # 2. Meter letras ('error_aqui') -> Provoca ValueError
+        # 3. Presionar Enter tras el mensaje de error ('')
+        # 4. Salir ('3')
+        mock_input.side_effect = ['1', 'error_aqui', '', '3']
+        
+        with patch('builtins.print') as mock_print:
+            menu_principal()
+            # CORRECCIÓN: Quitamos la 'b' de 'numbero' y añadimos la tilde
+            mock_print.assert_any_call("Error: Por favor, ingrese un número entero.")
 
 if __name__ == '__main__':
     unittest.main()

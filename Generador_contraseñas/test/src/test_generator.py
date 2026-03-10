@@ -1,46 +1,44 @@
 import sys
 import os
-
-# Añade la carpeta raíz del proyecto al path de Python
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from src.core import generar_password
 import unittest
-import string 
+import string
+
+# Sube dos niveles para llegar a la raíz 'Generador_contraseñas'
+# Nivel 1: de 'src' a 'test'
+# Nivel 2: de 'test' a la raíz
+raiz_proyecto = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, raiz_proyecto)
+
+from src.generator import generar_password
 
 class TestGeneradorPassword(unittest.TestCase):
 
     def test_longitud_correcta(self):
-        """Verifica que la contraseña tenga la longitud solicitada."""
-        longitudes = [8, 12, 20, 32]
-        for l in longitudes:
-            pw = generar_password(longitud=l)
-            self.assertEqual(len(pw), l)
+        """Verifica que la contraseña tenga el largo solicitado."""
+        largo = 20
+        pwd = generar_password(longitud=largo)
+        self.assertEqual(len(pwd), largo)
 
-    def test_excluir_confusos(self):
-        """Verifica que no existan caracteres '0OlI1' si se activa la opción."""
-        confusos = set("0OlI1")
-        for _ in range(50): # Probamos varias veces por aleatoriedad
-            pw = generar_password(excluir_confusos=True)
-            self.assertTrue(all(c not in confusos for c in pw), f"Error: Se encontró un carácter confuso en {pw}")
+    def test_solo_minusculas(self):
+        """Verifica que si desactivamos todo, solo use minúsculas."""
+        pwd = generar_password(usar_mayus=False, usar_nums=False, usar_syms=False)
+        self.assertTrue(all(c in string.ascii_lowercase for c in pwd))
 
-    def test_solo_numeros(self):
-        """Verifica que si solo pedimos números, solo devuelva números."""
-        pw = generar_password(usar_mayus=False, usar_nums=True, usar_simbs=False)
-        self.assertTrue(all(c in string.digits for c in pw))
+    def test_excluir_ambiguos(self):
+        """Verifica que no contenga caracteres como '0', 'O', 'I', 'l', '1'."""
+        ambiguos = "0OI1l"
+        # Generamos una contraseña larga para aumentar la probabilidad de detectar errores
+        pwd = generar_password(longitud=100, excluir_ambiguos=True)
+        for char in ambiguos:
+            with self.subTest(char=char):
+                self.assertNotIn(char, pwd)
 
-    def test_sin_mayusculas(self):
-        """Verifica que no haya mayúsculas si se deshabilitan."""
-        pw = generar_password(usar_mayus=False)
-        self.assertFalse(any(c.isupper() for c in pw))
+    def test_incluye_numeros(self):
+        """Verifica que incluya números cuando se solicita (prueba de probabilidad)."""
+        # Nota: Al ser aleatorio, probamos con una longitud mayor
+        pwd = generar_password(longitud=50, usar_nums=True, usar_mayus=False, usar_syms=False)
+        tiene_numero = any(c.isdigit() for c in pwd)
+        self.assertTrue(tiene_numero)
 
-    def test_pool_vacio_fallback(self):
-        """
-        Verifica el comportamiento cuando todo es False. 
-        Nota: Tu función actual usa minúsculas por defecto, este test confirma eso.
-        """
-        pw = generar_password(usar_mayus=False, usar_nums=False, usar_simbs=False)
-        self.assertTrue(all(c in string.ascii_lowercase for c in pw))
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

@@ -1,43 +1,41 @@
 import unittest
-from unittest.mock import patch, mock_open
-import sys
 import os
+import sys
 
-# Esto añade la carpeta raíz del proyecto al camino de búsqueda de Python
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Ajuste de ruta para llegar a la raíz desde 'test/src/'
+raiz_proyecto = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, raiz_proyecto)
 
-from src.almacenamiento import guardar_contrasena_en_archivo
+from src.validator import evaluar_fortaleza
 
-class TestAlmacenamiento(unittest.TestCase):
+class TestValidator(unittest.TestCase):
 
-    @patch('builtins.input', return_value='s')
-    @patch('builtins.open', new_callable=mock_open)
-    def test_guardar_exitoso(self, mock_file, mock_input):
-        """Prueba que la contraseña se guarde cuando el usuario dice 's'."""
-        pass_test = "Password123"
-        fortaleza_test = "Alta"
-        
-        guardar_contrasena_en_archivo(pass_test, fortaleza_test)
+    def test_fortaleza_debil(self):
+        """Contraseñas cortas o con pocos tipos de caracteres."""
+        self.assertEqual(evaluar_fortaleza("abc"), "Débil")
+        self.assertEqual(evaluar_fortaleza("123456"), "Débil")
 
-        # Verifica que el archivo se abrió en modo append ('a')
-        mock_file.assert_called_once_with("contrasenas.txt", "a", encoding="utf-8")
-        
-        # Verifica que se escribió contenido que incluye la contraseña y la fortaleza
-        handle = mock_file()
-        args, _ = handle.write.call_args
-        contenido_escrito = args[0]
-        
-        self.assertIn(pass_test, contenido_escrito)
-        self.assertIn(fortaleza_test, contenido_escrito)
+    def test_fortaleza_media(self):
+        """Contraseñas con 3 criterios cumplidos."""
+        # Ejemplo: Minúsculas (1) + Mayúsculas (1) + Números (1) = 3
+        self.assertEqual(evaluar_fortaleza("Ab1"), "Media")
 
-    @patch('builtins.input', return_value='n')
-    @patch('builtins.open', new_callable=mock_open)
-    def test_cancelar_guardado(self, mock_file, mock_input):
-        """Prueba que NO se escriba nada si el usuario dice 'n'."""
-        guardar_contrasena_en_archivo("pass", "Baja")
-        
-        # Verifica que el archivo nunca se llegó a abrir para escribir
-        mock_file.assert_not_called()
+    def test_fortaleza_fuerte(self):
+        """Contraseñas con 4 criterios cumplidos."""
+        # Ejemplo: Minúsculas + Mayúsculas + Números + Símbolos = 4
+        self.assertEqual(evaluar_fortaleza("Ab1!"), "Fuerte")
+
+    def test_fortaleza_muy_fuerte(self):
+        """Contraseñas largas con variedad completa."""
+        # Longitud >= 12 (1) + Minús (1) + Mayús (1) + Núms (1) + Syms (1) = 5
+        self.assertEqual(evaluar_fortaleza("Password2026!"), "Muy fuerte")
+
+    def test_longitud_influye(self):
+        """Verifica que la longitud sume el punto extra necesario para 'Muy fuerte'."""
+        # Caso: Todas las categorías pero longitud < 12 (Puntuación 4)
+        self.assertEqual(evaluar_fortaleza("Ab1!"), "Fuerte")
+        # Caso: Mismas categorías pero longitud >= 12 (Puntuación 5)
+        self.assertEqual(evaluar_fortaleza("Ab1!longitud12"), "Muy fuerte")
 
 if __name__ == '__main__':
     unittest.main()
