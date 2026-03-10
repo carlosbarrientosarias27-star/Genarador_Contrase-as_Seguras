@@ -1,26 +1,22 @@
 # 🛠️ Casos de Prueba Edge (Edge Cases)
-Basado en la lógica de tus archivos, aquí tienes los escenarios críticos a validar:
 
-## 1. Longitud Mínima y Validación de Rango
-    
-En main.py, la función generar_contrasena establece un piso de 8 caracteres, mientras que validaciones.py permite configurar un rango de 8 a 128.
+## 1. Longitud mínima ("a", "1234", " " )
+La mayoría de los sistemas fallan aquí por no definir qué cuenta como "longitud".
 
-Prueba: Intentar generar una contraseña de longitud 7 o menor.
+- El Riesgo: Si el requisito es de 8 caracteres, ¿qué pasa si el usuario pone 8 espacios en blanco? Si no haces un trim() (quitar espacios), el sistema podría aceptarlo.
 
-Resultado esperado: El sistema debe elevar la longitud a 8 automáticamente o mostrar un error de validación en el ciclo while de validaciones.py.
+- La Prueba: Intenta registrar una contraseña con un solo carácter o exactamente uno menos del límite permitido (si el mínimo es 8, prueba con 7).
 
-## 2. Generación sin Símbolos ni Mayúsculas
+## 2. Sin símbolos ("Password123")
+Este es un caso de "clase de caracteres". Evalúa si el sistema realmente obliga a la complejidad o si se puede engañar.
 
-El archivo core.py requiere que al menos un tipo de carácter esté activado.
+- El Riesgo: Muchos algoritmos de validación usan expresiones regulares (Regex) que pueden ser permisivas.
 
-Prueba: Seleccionar "n" (no) para mayúsculas, números y símbolos simultáneamente.
+- La Prueba: Crea una contraseña larga y alfanumérica, pero sin un solo carácter especial (como !, @, #). Si el sistema la acepta a pesar de que la regla dice "requiere símbolos", hay un fallo en la lógica booleana del código.
 
-Resultado esperado: El programa debe detectar que el pool de caracteres está vacío, mostrar un mensaje de error y solicitar de nuevo los inputs sin romperse.
+## 3. Máximas contraseñas (Límites de almacenamiento)
+Aquí pasamos de la validación de forma a la validación de capacidad y seguridad.
 
-## 3. Cantidad Máxima de Contraseñas
+- El Límite de Longitud: ¿Qué pasa si envío una contraseña de 10,000 caracteres? Algunos hashes (como BCrypt) tienen un límite de entrada (72 caracteres en algunos casos). Si envías más, el resto se ignora, lo cual es un riesgo de seguridad.
 
-El archivo validaciones.py limita la generación masiva a un máximo de 10 unidades.
-
-Prueba: Introducir 11 en la pregunta "¿Cuántas contraseñas quieres generar?".
-
-Resultado esperado: La función validar_entero debe rechazar el valor y repetir la pregunta hasta que se ingrese un número entre 1 y 10.
+- El Límite de Intentos: ¿Cuántas veces puedo intentar ingresar una contraseña antes de que el sistema me bloquee?La Prueba: Intentar un ataque de "fuerza bruta" controlado para ver si el sistema activa el rate limiting (limitación de tasa) o el bloqueo de cuenta después de $N$ intentos fallidos.
