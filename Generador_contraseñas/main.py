@@ -10,9 +10,15 @@ def limpiar_pantalla():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def menu_principal():
-    """Implementa el bucle principal y menú interactivo[cite: 123, 129, 131]."""
+    """
+    Gestiona el bucle principal de la aplicación y la interfaz de usuario.
+    
+    Muestra el menú interactivo, captura las preferencias del usuario para 
+    la generación de contraseñas y coordina el flujo entre los módulos 
+    de generación, validación y almacenamiento.
+    """
     while True:
-        limpiar_pantalla()
+        limpiar_pantalla()  # Usa la función de utils.py
         print("========================================")
         print("   GENERADOR DE CONTRASEÑAS SEGURAS    ") 
         print("========================================")
@@ -28,18 +34,17 @@ def menu_principal():
         
         if opcion == "1":
             try:
-                # Configuración inicial y validación de rango 
-                lon = int(input("Longitud (8-128) [16]: ") or 16)
-                if not (8 <= lon <= 128): lon = 16
+                # Uso de validar_rango para simplificar la lógica
+                lon_in = input("Longitud (8-128) [16]: ")
+                lon = validar_rango(lon_in, 8, 128, 16)
                 
                 mayus = input("¿Incluir mayúsculas? (s/n) [s]: ").lower() != 'n'
                 nums = input("¿Incluir números? (s/n) [s]: ").lower() != 'n'
                 syms = input("¿Incluir símbolos? (s/n) [s]: ").lower() != 'n'
                 ambig = input("¿Excluir ambiguos (0,O,1,l)? (s/n) [n]: ").lower() == 's'
                 
-                # Generación múltiple (1-10) 
-                cantidad = int(input("¿Cuántas generar? (1-10) [1]: ") or 1)
-                if not (1 <= cantidad <= 10): cantidad = 1
+                cant_in = input("¿Cuántas generar? (1-10) [1]: ")
+                cantidad = validar_rango(cant_in, 1, 10, 1)
                 
                 resultados = []
                 print("\nContraseñas generadas:")
@@ -52,10 +57,10 @@ def menu_principal():
                 if input("\n¿Guardar en archivo? (s/n): ").lower() == 's':
                     guardar_en_archivo(resultados)
                 
-                input("\nPresione Enter para volver al menú...")
-            except ValueError:
-                print("Error: Por favor, ingrese un número entero.")
-                input("Presione Enter para continuar...")
+                pausar()  # Usa la función de utils.py
+            except Exception as e:
+                print(f"Ocurrió un error inesperado: {e}")
+                pausar()
 
 if __name__ == "__main__":
     menu_principal()

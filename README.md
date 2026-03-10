@@ -60,27 +60,9 @@ Generador_contraseñas/
 
 1. **Clona el repositorio:**
 
-```bash
+```
 git clone https://github.com/tu-usuario/Generador_contraseñas.git
 cd Generador_contraseñas
-```
-
-2. **Crea y activa un entorno virtual (recomendado):**
-
-```bash
-python -m venv venv
-
-# En Windows:
-venv\Scripts\activate
-
-# En macOS/Linux:
-source venv/bin/activate
-```
-
-3. **Instala las dependencias:**
-
-```bash
-pip install -r requirements.txt
 ```
 
 ---
@@ -161,7 +143,7 @@ python -m pytest test/ -v
 
 ## Ejecutar tests de un módulo específico
 
-```bash
+```
 python -m pytest test/src/test_generator.py -v
 python -m pytest test/src/test_validator.py -v
 python -m pytest test/src/test_storage.py -v
@@ -170,15 +152,8 @@ python -m pytest test/src/test_utils.py -v
 
 ### Ejecutar casos edge
 
-```bash
-python -m pytest test/src/test_caso_edge.py -v
 ```
-
-## Ver cobertura de tests
-
-```bash
-pip install pytest-cov
-python -m pytest test/ --cov=src --cov-report=term-missing
+python -m pytest test/src/test_caso_edge.py -v
 ```
 
 ---

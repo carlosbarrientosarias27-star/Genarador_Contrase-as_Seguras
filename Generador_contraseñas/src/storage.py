@@ -2,6 +2,17 @@ import os
 from datetime import datetime
 
 def guardar_en_archivo(passwords_con_fortaleza):
+    """Guarda una lista de contraseñas y su fortaleza en un archivo de texto.
+
+    Crea la carpeta de destino si no existe y añade las contraseñas al final 
+    del archivo con una marca de tiempo.
+
+    Args:
+        passwords_con_fortaleza (list): Lista de tuplas (password, fortaleza).
+
+    Returns:
+        bool: True si la operación fue exitosa, False en caso contrario.
+    """
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     # CORRECCIÓN: Usa guion bajo en lugar de punto en el nombre de la variable
