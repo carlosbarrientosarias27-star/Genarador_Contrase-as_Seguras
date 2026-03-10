@@ -7,7 +7,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Ahora ya puedes importar
-from src.main import generar_contrasena
+from Generador_contraseñas.main import generar_contrasena
 
 class TestPasswordManager(unittest.TestCase):
 

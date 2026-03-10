@@ -6,8 +6,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 import string
 from src.core import generar_password as gen_core
-from src.main import generar_contrasena as gen_main
-from src.validaciones import validar_entero
+from Generador_contraseñas.main import generar_contrasena as gen_main
+from Generador_contraseñas.src.validator import validar_entero
 
 class TestPasswordEdgeCases(unittest.TestCase):
 
