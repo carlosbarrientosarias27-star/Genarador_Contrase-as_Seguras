@@ -116,18 +116,18 @@ cd generador-contraseñas
 # 💻 Uso básico
 
 ```
-# Ejecutar el generador principal
+## Ejecutar el generador principal
 cd Generador_contraseñas
 python main.py
 
-# Ejecutar el ejemplo del Proyecto de Prueba
+## Ejecutar el ejemplo del Proyecto de Prueba
 cd "Proyecto de Prueba"
 python generador.py
 ```
 
 ---
 
-# 📄 Licencia
+# 📄 License
 
 Este proyecto está bajo la licencia especificada en el archivo [LICENSE](Generador_contraseñas/LICENSE MIT).
 
